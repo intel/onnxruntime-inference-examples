@@ -108,7 +108,7 @@ namespace yolov3
             // Session Options
             SessionOptions options = new SessionOptions();
             options.LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_INFO;
-            options.AppendExecutionProvider_OpenVINO(@"MYRIAD_FP16");
+            options.AppendExecutionProvider_OpenVINO(@"CPU_FP32");
             options.AppendExecutionProvider_CPU(1);
 
             // Run inference

@@ -133,7 +133,8 @@ def postprocess_output(out, frame, x_scale, y_scale, i):
 
 def show_bbox(device, frame, inference_time):
   cv2.putText(frame,device,(10,20),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
-  cv2.putText(frame,'FPS: {}'.format(1.0/inference_time),(10,40),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
+  if (inference_time!=0):
+    cv2.putText(frame,'FPS: {}'.format(1.0/inference_time),(10,40),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
   frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
   cv2.imshow('frame',frame)
 
@@ -150,16 +151,16 @@ def main():
     print("Device type selected is 'cpu' which is the default CPU Execution Provider (MLAS)")
     #Specify the path to the ONNX model on your machine and register the CPU EP
     sess = rt.InferenceSession(args.model, so, providers=['CPUExecutionProvider'])
-  elif (args.device == 'CPU_FP32' or args.device == 'GPU_FP32' or args.device == 'GPU_FP16' or args.device == 'MYRIAD_FP16' or args.device == 'VADM_FP16'):
+  elif (args.device == 'CPU_FP32' or args.device == 'CPU_FP16' or args.device == 'GPU_FP32' or args.device == 'GPU_FP16' or args.device == 'MYRIAD_FP16' or args.device == 'VADM_FP16'):
     #Specify the path to the ONNX model on your machine and register the OpenVINO EP
     sess = rt.InferenceSession(args.model, so, providers=['OpenVINOExecutionProvider'], provider_options=[{'device_type' : args.device}])
     print("Device type selected is: " + args.device + " using the OpenVINO Execution Provider")
     '''
     other 'device_type' options are: (Any hardware target can be assigned if you have the access to it)
-    'CPU_FP32', 'GPU_FP32', 'GPU_FP16', 'MYRIAD_FP16', 'VAD-M_FP16'
+    'CPU_FP32', 'CPU_FP16', 'GPU_FP32', 'GPU_FP16', 'MYRIAD_FP16', 'VAD-M_FP16'
     '''
   else:
-    raise Exception("Device type selected is not [cpu, CPU_FP32, GPU_FP32, GPU_FP16, MYRIAD_FP16, VADM_FP16]")
+    raise Exception("Device type selected is not [cpu, CPU_FP32, CPU_FP16, GPU_FP32, GPU_FP16, MYRIAD_FP16, VADM_FP16]")
 
   # Get the input name of the model
   input_name = sess.get_inputs()[0].name

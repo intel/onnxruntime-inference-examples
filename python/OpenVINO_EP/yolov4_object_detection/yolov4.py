@@ -327,7 +327,8 @@ def main():
         image = draw_bbox(original_image, bboxes)
 
         cv2.putText(image,device,(10,20),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
-        cv2.putText(image,'FPS: {}'.format(1.0/inference_time),(10,40),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
+        if (inference_time!=0):
+            cv2.putText(image,'FPS: {}'.format(1.0/inference_time),(10,40),cv2.FONT_HERSHEY_COMPLEX,0.5,(255,255,255),1)
 
         # Write the frame with the detection boxes
         if (args.image):
